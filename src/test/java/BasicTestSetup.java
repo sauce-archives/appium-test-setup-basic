@@ -18,7 +18,7 @@ public class BasicTestSetup {
 	private AppiumDriver driver;
 
 	private final static String EXPECTED_RESULT_FOUR = "4";
-	private final static String EXPECTED_RESULT_ERROR = "Error";
+	private final static String EXPECTED_RESULT_NAN = "NaN";
 
 	@Before
 	public void setUp() throws Exception {
@@ -85,38 +85,24 @@ public class BasicTestSetup {
 
 	}
 
-	/* An invalid operation, it navigates to the advanced panel, selects factorial, then minus,
-	 * then the equal button. The expected result is an error message in the result field.
-	 * On devices where the advanced panel appears off screen (due to a bug in the calculator app),
-	 * this test will fail, so it is marked with @Ignore. */
+	/* A simple zero divided by zero operation. */
 	@Test
-	@Ignore
-	public void factorialMinusOperation() {
+	public void zerosDivisionOperation() {
 
-        /* In the main panel... */
-		MobileElement menuButton = (MobileElement) (driver.findElement(By.id("net.ludeke.calculator:id/overflow_menu")));
-		menuButton.click();
+        /* Get the elements. */
+		MobileElement digitZero = (MobileElement)(driver.findElement(By.id("net.ludeke.calculator:id/digit0")));
+		MobileElement buttonDivide = (MobileElement)(driver.findElement(By.id("net.ludeke.calculator:id/div")));
+		MobileElement buttonEquals = (MobileElement)(driver.findElement(By.id("net.ludeke.calculator:id/equal")));
+		MobileElement resultField = (MobileElement)(driver.findElement(By.xpath("//android.widget.EditText[1]")));
 
-		MobileElement advancedPanelButton = (MobileElement) (new WebDriverWait(driver, 60))
-				.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//android.widget.TextView[@text = 'Advanced panel']")));
-		advancedPanelButton.click();
+        /* Divide zero by zero. */
+		digitZero.click();
+		buttonDivide.click();
+		digitZero.click();
+		buttonEquals.click();
 
-        /* In the advanced panel... */
-		MobileElement factorialButton = (MobileElement) (new WebDriverWait(driver, 60))
-				.until(ExpectedConditions.presenceOfElementLocated(By.id("net.ludeke.calculator:id/factorial")));
-		factorialButton.click();
-
-        /* In the main panel again. */
-		MobileElement minusButton = (MobileElement) (new WebDriverWait(driver, 60))
-				.until(ExpectedConditions.presenceOfElementLocated(By.id("net.ludeke.calculator:id/minus")));
-		minusButton.click();
-
-		MobileElement equalsButton = (MobileElement) (driver.findElement(By.id("net.ludeke.calculator:id/equal")));
-		equalsButton.click();
-
-		MobileElement resultField = (MobileElement) (driver.findElement(By.xpath("//android.widget.EditText[1]")));
-
-		(new WebDriverWait(driver, 30)).until(ExpectedConditions.textToBePresentInElement(resultField, EXPECTED_RESULT_ERROR));
+        /* Check if within given time the correct error message appears in the designated field. */
+		(new WebDriverWait(driver, 30)).until(ExpectedConditions.textToBePresentInElement(resultField, EXPECTED_RESULT_NAN));
 
 	}
 
