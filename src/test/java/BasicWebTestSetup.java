@@ -24,13 +24,23 @@ public class BasicWebTestSetup {
         capabilities.setCapability("testobject_device", System.getenv("TESTOBJECT_DEVICE_ID"));
 
         String appiumVersion = System.getenv("TESTOBJECT_APPIUM_VERSION");
-        if(appiumVersion != null && appiumVersion.trim().isEmpty() == false){
+        if(appiumVersion != null && appiumVersion.trim().length() > 0){
             capabilities.setCapability("testobject_appium_version", appiumVersion);
         }
 
 		String cacheDevice = System.getenv("TESTOBJECT_CACHE_DEVICE");
-		if (cacheDevice != null && cacheDevice.trim().isEmpty() == false) {
+		if (cacheDevice != null && cacheDevice.trim().length() > 0) {
 			capabilities.setCapability("testobject_cache_device", cacheDevice);
+		}
+
+		String timeout = System.getenv("TIMEOUT_IN_MS");
+		if (timeout != null && timeout.trim().length() > 0) {
+			capabilities.setCapability("testobject_session_creation_timeout", timeout);
+		}
+
+		String retries = System.getenv("RETRIES");
+		if (retries != null && retries.trim().length() > 0) {
+			capabilities.setCapability("testobject_session_creation_retry", retries);
 		}
 
         // We generate a random UUID for later lookup in logs for debugging

@@ -3,7 +3,6 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -35,13 +34,23 @@ public class BasicTestSetup {
 		//capabilities.setCapability("testobject_device", "Motorola_Moto_E_2nd_gen_real"); // device id hardcoded
 
 		String appiumVersion = System.getenv("TESTOBJECT_APPIUM_VERSION");
-		if (appiumVersion != null && appiumVersion.trim().isEmpty() == false) {
+		if (appiumVersion != null && appiumVersion.trim().length() > 0) {
 			capabilities.setCapability("testobject_appium_version", appiumVersion);
 		}
 
 		String cacheDevice = System.getenv("TESTOBJECT_CACHE_DEVICE");
-		if (cacheDevice != null && cacheDevice.trim().isEmpty() == false) {
+		if (cacheDevice != null && cacheDevice.trim().length() > 0) {
 			capabilities.setCapability("testobject_cache_device", cacheDevice);
+		}
+
+		String timeout = System.getenv("TIMEOUT_IN_MS");
+		if (timeout != null && timeout.trim().length() > 0) {
+			capabilities.setCapability("testobject_session_creation_timeout", timeout);
+		}
+
+		String retries = System.getenv("RETRIES");
+		if (retries != null && retries.trim().length() > 0) {
+			capabilities.setCapability("testobject_session_creation_retry", retries);
 		}
 
 		// We generate a random UUID for later lookup in logs for debugging
