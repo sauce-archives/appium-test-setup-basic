@@ -1,9 +1,7 @@
 #!groovy
 
 pipeline {
-    agent {
-        docker "maven:3.3.9"
-    }
+    agent any
 
     stages {
         stage("staging test") {
@@ -12,7 +10,7 @@ pipeline {
             }
             steps {
                 lock (resource: params.TESTOBJECT_DEVICE_ID) {
-                    sh "mvn -B clean test"
+                    sh "./gradlew clean test"
                 }
             }
         }
@@ -21,7 +19,7 @@ pipeline {
                  expression { params.APPIUM_SERVER != 'http://appium.staging.testobject.org/wd/hub' }
             }
             steps {
-                sh "mvn -B clean test"
+                sh "./gradlew clean test"
             }
         }
     }
