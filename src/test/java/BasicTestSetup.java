@@ -33,6 +33,10 @@ public class BasicTestSetup {
 		capabilities.setCapability("testobject_device", System.getenv("TESTOBJECT_DEVICE_ID")); // device id through env variable
 		//capabilities.setCapability("testobject_device", "Motorola_Moto_E_2nd_gen_real"); // device id hardcoded
 
+		// optional
+		capabilities.setCapability("testobject_session_creation_retry", getEnvOrDefault("TESTOBJECT_ALLOCATION_RETRIES", "1"));
+		capabilities.setCapability("testobject_session_creation_timeout", getEnvOrDefault("TESTOBJECT_TIMEOUT", "300000")); //5 minutes
+
 		String appiumVersion = System.getenv("TESTOBJECT_APPIUM_VERSION");
 		if (appiumVersion != null && appiumVersion.trim().length() > 0) {
 			capabilities.setCapability("testobject_appium_version", appiumVersion);
@@ -41,16 +45,6 @@ public class BasicTestSetup {
 		String cacheDevice = System.getenv("TESTOBJECT_CACHE_DEVICE");
 		if (cacheDevice != null && cacheDevice.trim().length() > 0) {
 			capabilities.setCapability("testobject_cache_device", cacheDevice);
-		}
-
-		String timeout = System.getenv("TIMEOUT_IN_MS");
-		if (timeout != null && timeout.trim().length() > 0) {
-			capabilities.setCapability("testobject_session_creation_timeout", timeout);
-		}
-
-		String retries = System.getenv("RETRIES");
-		if (retries != null && retries.trim().length() > 0) {
-			capabilities.setCapability("testobject_session_creation_retry", retries);
 		}
 
 		// We generate a random UUID for later lookup in logs for debugging
@@ -113,6 +107,15 @@ public class BasicTestSetup {
         /* Check if within given time the correct error message appears in the designated field. */
 		(new WebDriverWait(driver, 30)).until(ExpectedConditions.textToBePresentInElement(resultField, EXPECTED_RESULT_NAN));
 
+	}
+
+	private String getEnvOrDefault(String env, String s) {
+		String var = System.getenv(env);
+		if (var == null) {
+			return s;
+		} else {
+			return var;
+		}
 	}
 
 }
