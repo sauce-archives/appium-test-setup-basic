@@ -22,8 +22,6 @@ public class BasicWebTestSetup {
         capabilities.setCapability("testobject_app_id", "1");
         capabilities.setCapability("testobject_api_key", System.getenv("TESTOBJECT_API_KEY_WEB"));
         capabilities.setCapability("testobject_device", System.getenv("TESTOBJECT_DEVICE_ID"));
-		capabilities.setCapability("testobject_session_creation_retry", getEnvOrDefault("TESTOBJECT_ALLOCATION_RETRIES", "1"));
-		capabilities.setCapability("testobject_session_creation_timeout", getEnvOrDefault("TESTOBJECT_TIMEOUT", "300000")); //5 minutes
 
         String appiumVersion = System.getenv("TESTOBJECT_APPIUM_VERSION");
         if(appiumVersion != null && appiumVersion.trim().length() > 0){
@@ -33,6 +31,16 @@ public class BasicWebTestSetup {
 		String cacheDevice = System.getenv("TESTOBJECT_CACHE_DEVICE");
 		if (cacheDevice != null && cacheDevice.trim().length() > 0) {
 			capabilities.setCapability("testobject_cache_device", cacheDevice);
+		}
+
+		String TESTOBJECT_SESSION_CREATION_TIMEOUT = System.getenv("TESTOBJECT_SESSION_CREATION_TIMEOUT");
+		if (TESTOBJECT_SESSION_CREATION_TIMEOUT != null) {
+			capabilities.setCapability("testobject_session_creation_timeout", TESTOBJECT_SESSION_CREATION_TIMEOUT);
+		}
+
+		String TESTOBJECT_SESSION_CREATION_RETRY = System.getenv("TESTOBJECT_SESSION_CREATION_RETRY");
+		if (TESTOBJECT_SESSION_CREATION_RETRY != null) {
+			capabilities.setCapability("testobject_session_creation_retry", TESTOBJECT_SESSION_CREATION_RETRY);
 		}
 
         // We generate a random UUID for later lookup in logs for debugging
@@ -70,13 +78,4 @@ public class BasicWebTestSetup {
             System.out.println("Exception while saving the file " + e);
         }
     }
-
-	private String getEnvOrDefault(String env, String s) {
-		String var = System.getenv(env);
-		if (var == null) {
-			return s;
-		} else {
-			return var;
-		}
-	}
 }
