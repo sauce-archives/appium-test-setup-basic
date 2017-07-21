@@ -23,8 +23,8 @@ def runTest() {
     }
 }
 
-if (env.APPIUM_SERVER.contains("staging.testobject.org")) {
-    lock (resource: params.TESTOBJECT_DEVICE_ID) {
+if (env.APPIUM_URL.contains("staging.testobject.org")) {
+    lock (resource: params.TESTOBJECT_DEVICE) {
         runTest()
     }
 } else {
