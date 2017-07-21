@@ -21,7 +21,7 @@ public class BasicWebTestSetup {
 
         capabilities.setCapability("testobject_app_id", "1");
         capabilities.setCapability("testobject_api_key", System.getenv("TESTOBJECT_API_KEY_WEB"));
-        capabilities.setCapability("testobject_device", System.getenv("TESTOBJECT_DEVICE_ID"));
+        capabilities.setCapability("testobject_device", System.getenv("TESTOBJECT_DEVICE"));
 
         String appiumVersion = System.getenv("TESTOBJECT_APPIUM_VERSION");
         if(appiumVersion != null && appiumVersion.trim().length() > 0){
@@ -48,7 +48,7 @@ public class BasicWebTestSetup {
         System.out.println("TestUUID: " + testUUID);
         capabilities.setCapability("testobject_testuuid", testUUID);
 
-        driver = new AndroidDriver(new URL(System.getenv("APPIUM_SERVER")), capabilities);
+        driver = new AndroidDriver(new URL(System.getenv("APPIUM_URL")), capabilities);
 
         System.out.println(driver.getCapabilities().getCapability("testobject_test_report_url"));
         System.out.println(driver.getCapabilities().getCapability("testobject_test_live_view_url"));
