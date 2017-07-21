@@ -30,7 +30,7 @@ public class BasicTestSetup {
 
 		capabilities.setCapability("testobject_app_id", "1");
 
-		capabilities.setCapability("testobject_device", System.getenv("TESTOBJECT_DEVICE_ID")); // device id through env variable
+		capabilities.setCapability("testobject_device", System.getenv("TESTOBJECT_DEVICE")); // device id through env variable
 		//capabilities.setCapability("testobject_device", "Motorola_Moto_E_2nd_gen_real"); // device id hardcoded
 
 		String appiumVersion = System.getenv("TESTOBJECT_APPIUM_VERSION");
@@ -66,7 +66,7 @@ public class BasicTestSetup {
         /* The driver will take care of establishing the connection, so we must provide
 		* it with the correct endpoint and the requested capabilities. */
 
-		driver = new AndroidDriver(new URL(System.getenv("APPIUM_SERVER")), capabilities);
+		driver = new AndroidDriver(new URL(System.getenv("APPIUM_URL")), capabilities);
 
 		System.out.println(driver.getCapabilities().getCapability("testobject_test_report_url"));
 		System.out.println(driver.getCapabilities().getCapability("testobject_test_live_view_url"));
