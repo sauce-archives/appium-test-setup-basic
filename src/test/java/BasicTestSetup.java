@@ -31,6 +31,7 @@ public class BasicTestSetup {
 		setOptionalCapability("TESTOBJECT_APP_ID");
 		setOptionalCapability("TESTOBJECT_DEVICE");
 		setOptionalCapability("deviceName", "DEVICE_NAME");
+		setOptionalCapability("platformVersion", "PLATFORM_VERSION");
 		setOptionalCapability("automationName", "AUTOMATION_NAME");
 		setOptionalCapability("TESTOBJECT_APPIUM_VERSION");
 		setOptionalCapability("TESTOBJECT_CACHE_DEVICE");
