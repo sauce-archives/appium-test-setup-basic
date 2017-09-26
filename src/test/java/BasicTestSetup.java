@@ -10,11 +10,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.UUID;
 
 public class BasicTestSetup {
 
 	private AppiumDriver driver;
+	DesiredCapabilities capabilities;
 
 	private final static String EXPECTED_RESULT_FOUR = "4";
 	private final static String EXPECTED_RESULT_NAN = "NaN";
@@ -22,36 +24,16 @@ public class BasicTestSetup {
 	@Before
 	public void setUp() throws Exception {
 
-		DesiredCapabilities capabilities = new DesiredCapabilities();
+		capabilities = new DesiredCapabilities();
+		capabilities.setCapability("testobject_api_key", System.getenv("TESTOBJECT_API_KEY"));
 
-        /* These are the capabilities we must provide to run our test on TestObject. */
-		capabilities.setCapability("testobject_api_key", System.getenv("TESTOBJECT_API_KEY")); // API key through env variable
-		//capabilities.setCapability("testobject_api_key", "YOUR_API_KEY")); // API key hardcoded
-
-		capabilities.setCapability("testobject_app_id", "1");
-
-		capabilities.setCapability("testobject_device", System.getenv("TESTOBJECT_DEVICE_ID")); // device id through env variable
-		//capabilities.setCapability("testobject_device", "Motorola_Moto_E_2nd_gen_real"); // device id hardcoded
-
-		String appiumVersion = System.getenv("TESTOBJECT_APPIUM_VERSION");
-		if (appiumVersion != null && appiumVersion.trim().length() > 0) {
-			capabilities.setCapability("testobject_appium_version", appiumVersion);
-		}
-
-		String cacheDevice = System.getenv("TESTOBJECT_CACHE_DEVICE");
-		if (cacheDevice != null && cacheDevice.trim().length() > 0) {
-			capabilities.setCapability("testobject_cache_device", cacheDevice);
-		}
-
-		String TESTOBJECT_SESSION_CREATION_TIMEOUT = System.getenv("TESTOBJECT_SESSION_CREATION_TIMEOUT");
-		if (TESTOBJECT_SESSION_CREATION_TIMEOUT != null) {
-			capabilities.setCapability("testobject_session_creation_timeout", TESTOBJECT_SESSION_CREATION_TIMEOUT);
-		}
-
-		String TESTOBJECT_SESSION_CREATION_RETRY = System.getenv("TESTOBJECT_SESSION_CREATION_RETRY");
-		if (TESTOBJECT_SESSION_CREATION_RETRY != null) {
-			capabilities.setCapability("testobject_session_creation_retry", TESTOBJECT_SESSION_CREATION_RETRY);
-		}
+		setOptionalCapability("TESTOBJECT_APP_ID");
+		setOptionalCapability("TESTOBJECT_DEVICE");
+		setOptionalCapability("deviceName", "DEVICE_NAME");
+		setOptionalCapability("TESTOBJECT_APPIUM_VERSION");
+		setOptionalCapability("TESTOBJECT_CACHE_DEVICE");
+		setOptionalCapability("TESTOBJECT_SESSION_CREATION_TIMEOUT");
+		setOptionalCapability("TESTOBJECT_SESSION_CREATION_RETRY");
 
 		// We generate a random UUID for later lookup in logs for debugging
 		String testUUID = UUID.randomUUID().toString();
@@ -60,7 +42,6 @@ public class BasicTestSetup {
 
         /* The driver will take care of establishing the connection, so we must provide
 		* it with the correct endpoint and the requested capabilities. */
-
 		driver = new AndroidDriver(new URL(System.getenv("APPIUM_SERVER")), capabilities);
 
 		System.out.println(driver.getCapabilities().getCapability("testobject_test_report_url"));
@@ -113,6 +94,18 @@ public class BasicTestSetup {
         /* Check if within given time the correct error message appears in the designated field. */
 		(new WebDriverWait(driver, 30)).until(ExpectedConditions.textToBePresentInElement(resultField, EXPECTED_RESULT_NAN));
 
+	}
+
+	private void setOptionalCapability(String var) {
+		Optional.ofNullable(System.getenv(var.toUpperCase()))
+				.filter(env -> !env.isEmpty())
+				.ifPresent(data -> capabilities.setCapability(var, data));
+	}
+
+	private void setOptionalCapability(String desiredCapabilityName, String environmentVariableName) {
+		Optional.ofNullable(System.getenv(environmentVariableName))
+				.filter(env -> !env.isEmpty())
+				.ifPresent(value -> capabilities.setCapability(desiredCapabilityName, value));
 	}
 
 }
