@@ -64,6 +64,7 @@ public class BasicTestSetup {
 		MobileElement buttonPlus = (MobileElement) (driver.findElement(By.id("net.ludeke.calculator:id/plus")));
 		MobileElement buttonEquals = (MobileElement) (driver.findElement(By.id("net.ludeke.calculator:id/equal")));
 
+		MobileElement resultField = (MobileElement) (driver.findElement(By.xpath("//android.widget.EditText[1]")));
         /* Add two and two. */
 		buttonTwo.click();
 		buttonPlus.click();
@@ -71,7 +72,6 @@ public class BasicTestSetup {
 		buttonEquals.click();
 
         /* Check if within given time the correct result appears in the designated field. */
-		MobileElement resultField = (MobileElement) (driver.findElement(By.xpath("//android.widget.EditText[1]")));
 		(new WebDriverWait(driver, 30)).until(ExpectedConditions.textToBePresentInElement(resultField, EXPECTED_RESULT_FOUR));
 
 	}
@@ -86,6 +86,7 @@ public class BasicTestSetup {
 		MobileElement buttonDivide = (MobileElement)(driver.findElement(By.id("net.ludeke.calculator:id/div")));
 		MobileElement buttonEquals = (MobileElement)(driver.findElement(By.id("net.ludeke.calculator:id/equal")));
 
+		MobileElement resultField = (MobileElement) (driver.findElement(By.xpath("//android.widget.EditText[1]")));
         /* Divide zero by zero. */
 		digitZero.click();
 		buttonDivide.click();
@@ -93,7 +94,6 @@ public class BasicTestSetup {
 		buttonEquals.click();
 
         /* Check if within given time the correct error message appears in the designated field. */
-		MobileElement resultField = (MobileElement) (driver.findElement(By.xpath("//android.widget.EditText[1]")));
 		(new WebDriverWait(driver, 30)).until(ExpectedConditions.textToBePresentInElement(resultField, EXPECTED_RESULT_NAN));
 
 	}
