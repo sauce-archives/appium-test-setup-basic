@@ -28,15 +28,15 @@ public class BasicTestSetup {
 		capabilities = new DesiredCapabilities();
 		capabilities.setCapability("testobject_api_key", System.getenv("TESTOBJECT_API_KEY"));
 
-		setOptionalCapability("TESTOBJECT_APP_ID");
-		setOptionalCapability("TESTOBJECT_DEVICE");
+		setOptionalCapability("testobject_app_id", "TESTOBJECT_APP_ID");
+		setOptionalCapability("testobject_device", "TESTOBJECT_DEVICE");
 		setOptionalCapability("deviceName", "DEVICE_NAME");
 		setOptionalCapability("platformVersion", "PLATFORM_VERSION");
 		setOptionalCapability("automationName", "AUTOMATION_NAME");
-		setOptionalCapability("TESTOBJECT_APPIUM_VERSION");
-		setOptionalCapability("TESTOBJECT_CACHE_DEVICE");
-		setOptionalCapability("TESTOBJECT_SESSION_CREATION_TIMEOUT");
-		setOptionalCapability("TESTOBJECT_SESSION_CREATION_RETRY");
+		setOptionalCapability("testobject_appium_version", "TESTOBJECT_APPIUM_VERSION");
+		setOptionalCapability("testobject_cache_device", "TESTOBJECT_CACHE_DEVICE");
+		setOptionalCapability("testobject_session_creation_timeout", "TESTOBJECT_SESSION_CREATION_TIMEOUT");
+		setOptionalCapability("testobject_session_creation_retry", "TESTOBJECT_SESSION_CREATION_RETRY");
 
 		// We generate a random UUID for later lookup in logs for debugging
 		String testUUID = UUID.randomUUID().toString();
@@ -64,8 +64,8 @@ public class BasicTestSetup {
 		MobileElement buttonTwo = (MobileElement) (driver.findElement(By.id("net.ludeke.calculator:id/digit2")));
 		MobileElement buttonPlus = (MobileElement) (driver.findElement(By.id("net.ludeke.calculator:id/plus")));
 		MobileElement buttonEquals = (MobileElement) (driver.findElement(By.id("net.ludeke.calculator:id/equal")));
-
 		MobileElement resultField = (MobileElement) (driver.findElement(By.xpath("//android.widget.EditText[1]")));
+
         /* Add two and two. */
 		buttonTwo.click();
 		buttonPlus.click();
@@ -86,8 +86,8 @@ public class BasicTestSetup {
 		MobileElement digitZero = (MobileElement)(driver.findElement(By.id("net.ludeke.calculator:id/digit0")));
 		MobileElement buttonDivide = (MobileElement)(driver.findElement(By.id("net.ludeke.calculator:id/div")));
 		MobileElement buttonEquals = (MobileElement)(driver.findElement(By.id("net.ludeke.calculator:id/equal")));
-
 		MobileElement resultField = (MobileElement) (driver.findElement(By.xpath("//android.widget.EditText[1]")));
+
         /* Divide zero by zero. */
 		digitZero.click();
 		buttonDivide.click();
@@ -97,12 +97,6 @@ public class BasicTestSetup {
         /* Check if within given time the correct error message appears in the designated field. */
 		(new WebDriverWait(driver, 30)).until(ExpectedConditions.textToBePresentInElement(resultField, EXPECTED_RESULT_NAN));
 
-	}
-
-	private void setOptionalCapability(String var) {
-		Optional.ofNullable(System.getenv(var.toUpperCase()))
-				.filter(env -> !env.isEmpty())
-				.ifPresent(data -> capabilities.setCapability(var, data));
 	}
 
 	private void setOptionalCapability(String desiredCapabilityName, String environmentVariableName) {

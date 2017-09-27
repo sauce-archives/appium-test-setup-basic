@@ -22,13 +22,15 @@ public class BasicWebTestSetup {
 		capabilities = new DesiredCapabilities();
         capabilities.setCapability("testobject_api_key", System.getenv("TESTOBJECT_API_KEY_WEB"));
 
-		setOptionalCapability("TESTOBJECT_APP_ID");
-		setOptionalCapability("TESTOBJECT_DEVICE");
+		setOptionalCapability("testobject_app_id", "TESTOBJECT_APP_ID");
+		setOptionalCapability("testobject_device", "TESTOBJECT_DEVICE");
 		setOptionalCapability("deviceName", "DEVICE_NAME");
-		setOptionalCapability("TESTOBJECT_APPIUM_VERSION");
-		setOptionalCapability("TESTOBJECT_CACHE_DEVICE");
-		setOptionalCapability("TESTOBJECT_SESSION_CREATION_TIMEOUT");
-		setOptionalCapability("TESTOBJECT_SESSION_CREATION_RETRY");
+		setOptionalCapability("platformVersion", "PLATFORM_VERSION");
+		setOptionalCapability("automationName", "AUTOMATION_NAME");
+		setOptionalCapability("testobject_appium_version", "TESTOBJECT_APPIUM_VERSION");
+		setOptionalCapability("testobject_cache_device", "TESTOBJECT_CACHE_DEVICE");
+		setOptionalCapability("testobject_session_creation_timeout", "TESTOBJECT_SESSION_CREATION_TIMEOUT");
+		setOptionalCapability("testobject_session_creation_retry", "TESTOBJECT_SESSION_CREATION_RETRY");
 
         // We generate a random UUID for later lookup in logs for debugging
         String testUUID = UUID.randomUUID().toString();
@@ -66,12 +68,6 @@ public class BasicWebTestSetup {
             System.out.println("Exception while saving the file " + e);
         }
     }
-
-	private void setOptionalCapability(String var) {
-		Optional.ofNullable(System.getenv(var.toUpperCase()))
-				.filter(env -> !env.isEmpty())
-				.ifPresent(data -> capabilities.setCapability(var, data));
-	}
 
 	private void setOptionalCapability(String desiredCapabilityName, String environmentVariableName) {
 		Optional.ofNullable(System.getenv(environmentVariableName))
