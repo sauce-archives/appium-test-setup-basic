@@ -10,7 +10,7 @@ def runTest() {
             if (env.TEST_CLASS) {
                 gradleTestCommand = "./gradlew -Dtest.single=${env.TEST_CLASS} -w clean test"
             } else {
-                gradleTestCommand = "./gradlew clean -w test"
+                gradleTestCommand = "./gradlew -q clean test"
             }
             try {
                 docker.image("java:8").inside {
