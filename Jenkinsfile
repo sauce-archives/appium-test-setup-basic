@@ -8,9 +8,9 @@ def runTest() {
         stage("test") {
             def gradleTestCommand
             if (env.TEST_CLASS) {
-                gradleTestCommand = "./gradlew -Dtest.single=${env.TEST_CLASS} -q clean test"
+                gradleTestCommand = "./gradlew -Dtest.single=${env.TEST_CLASS} clean test"
             } else {
-                gradleTestCommand = "./gradlew -q clean test"
+                gradleTestCommand = "./gradlew clean test"
             }
             try {
                 docker.image("java:8").inside {
