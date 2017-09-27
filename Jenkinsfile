@@ -8,7 +8,7 @@ def runTest() {
         stage("test") {
             def gradleTestCommand
             if (env.TEST_CLASS) {
-                gradleTestCommand = "./gradlew -Dtest.single=${env.TEST_CLASS} -w clean test"
+                gradleTestCommand = "./gradlew -Dtest.single=${env.TEST_CLASS} -q clean test"
             } else {
                 gradleTestCommand = "./gradlew -q clean test"
             }
